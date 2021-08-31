@@ -67,8 +67,10 @@ public class Debugger
                     if (File.Exists(ResourcesConfigFilePath))
                         File.Delete(ResourcesConfigFilePath);
                     configData = new DebuggerConfig();
-                    configData.UPDATEDATE = System.DateTime.Now.ToString("yyyyMMddHHmmss");
-
+                    configData.UPDATEDATE = System.DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                    var dir = Path.GetDirectoryName(ResourcesConfigFilePath);
+                     if (!Directory.Exists(dir))
+                        Directory.CreateDirectory(dir);
                     File.Create(ResourcesConfigFilePath).Close();
                     File.WriteAllText(ResourcesConfigFilePath, JsonUtility.ToJson(configData));
                     UnityEditor.AssetDatabase.Refresh();
@@ -156,16 +158,17 @@ public class Debugger
         if (configData == null) 
             configData = new DebuggerConfig();
 
-        configData.UPDATEDATE = System.DateTime.Now.ToString("yyyyMMddHHmmss");
+        configData.UPDATEDATE = System.DateTime.Now.ToString("yyyyMMddHHmmssfff");
 
 #if UNITY_EDITOR
          if (!File.Exists(ResourcesConfigFilePath))
             File.Create(ResourcesConfigFilePath).Close();
         File.WriteAllText(ResourcesConfigFilePath, JsonUtility.ToJson(configData));
         UnityEditor.AssetDatabase.Refresh();
-#endif
 
         Debug.LogWarning("debugger config data file update.");
+#endif
+
 
 
        DebuggerUploader.RefreshUploadPath();

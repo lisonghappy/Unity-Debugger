@@ -31,7 +31,7 @@ public class DebuggerWindow : EditorWindow
         if (GUILayout.Button(Version, linkBtnStyle)) { OpenLink(); }
         GUILayout.Label("<color=#00FFA7>Debugger</color>", titleStyle);
 
-         
+        EditorGUI.BeginChangeCheck();
         GUILayout.Space(20f);
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         Debugger.ConfigData.Enable = GUILayout.Toggle(Debugger.ConfigData.Enable, "Enable Log");
@@ -44,9 +44,9 @@ public class DebuggerWindow : EditorWindow
         GUILayout.Space(10f);
         EditorGUILayout.EndVertical();
 
-
         pos = GUILayout.BeginScrollView(pos);
 
+    
         GUILayout.Space(10f);
         DrawUploadPanel();
   
@@ -54,8 +54,9 @@ public class DebuggerWindow : EditorWindow
         DrawLogStatePanel();
         GUILayout.EndScrollView();
 
-        GUILayout.Space(20f);
-        if (GUILayout.Button("Save", GUILayout.Height(50f)))
+        GUILayout.Space(10f);
+
+        if (EditorGUI.EndChangeCheck())
         {
             Debugger.SaveDebuggerConfigData();
         }
